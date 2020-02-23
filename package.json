@@ -1,0 +1,28 @@
+{
+  "name": "@zhaiduting/promise-gif",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zhaiduting/promise-gif.git"
+  },
+  "keywords": [
+    "promise-gif"
+  ],
+  "author": "zhaiduting@163.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zhaiduting/promise-gif/issues"
+  },
+  "homepage": "https://github.com/zhaiduting/promise-gif#readme",
+  "dependencies": {
+    "jquery": "*"
+  },
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com/"
+  }
+}
