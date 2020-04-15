@@ -6,6 +6,7 @@ let defaultConfig={
 };
 export default function(arg){
     let gif= $('#zhaiduting-promise-gif');
+    let timer;
     if(!gif.length){
         let config= typeof(arg)==='object'? $.extend(defaultConfig, arg): defaultConfig;
         let html=`
@@ -17,15 +18,17 @@ export default function(arg){
         gif=$('#zhaiduting-promise-gif')
     }
     if(arg===false || arg===0){ //关闭gif
-        return this.then(()=>
-            setTimeout(()=>
+        return this.then(()=>{
+            clearTimeout(timer);
+            timer= setTimeout(()=>
                 gif.hide(), 200
             )
-        ).catch(()=>
-            setTimeout(()=>
+        }).catch(()=>{
+            clearTimeout(timer);
+            timer= setTimeout(()=>
                 gif.hide(), 200
             )
-        );
+        });
     }else{
         gif.show();
     }
