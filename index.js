@@ -1,9 +1,12 @@
 /**
+ * 无论 Promise 执行成功或者失败 gif(0) 都可以关闭动画
+ * 如果有 catch()，请放置在 gif(0) 之前
+ * 放置在 gif(0) 之后的 then() 始终都会执行
  * Created by zhaiduting@163.com, 2019-3-15
  * Usage is as follows
- * 1. axios.get(href).gif().then(success_callback).catch(err_callback).gif(0);
- * 2. axios.get(href).gif().then(success_callback).gif(0).catch(err_callback);   Recommended
- * 3. axios.get(href).gif().then(success_callback).gif(0);
+ * 1. axios.get(href).gif().then(success_callback).catch(err_callback).gif(0);          Place catch() before gif(0)
+ * 2. axios.get(href).gif().then(success_callback).gif(0).catch(err_callback);          Otherwise last catch() cannot work
+ * 3. axios.get(href).gif().then(success_callback).catch(err_callback).gif(0).then(finally_callback);   Last then() work well
  */
 
 let width=30, height=30;
@@ -45,7 +48,7 @@ export default function(arg){
             .then(()=> gif_close(gif))
             .catch(err=>{
                 gif_close(gif);
-                return Promise.reject(err);     //将错误抛给promise链里面的其它catch()函数处理
+                // return Promise.reject(err);     //将错误抛给promise链里面的其它catch()函数处理
             });
     }else{                      //显示gif
         clearTimeout(gif_timer);
