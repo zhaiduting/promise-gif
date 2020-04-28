@@ -4,8 +4,12 @@
  * 放置在 gif(0) 之后的 then() 始终都会执行
  * Created by zhaiduting@163.com, 2019-3-15
  * Usage is as follows
- * 1. axios.get(href).gif().then(success_callback).catch(err_callback).gif(0);          Place catch() before gif(0)
- * 2. axios.get(href).gif().then(success_callback).gif(0).catch(err_callback);          Otherwise last catch() cannot work
+ * open gif: gif()
+ * close gif: gif(false | 0 | 'ignore')
+ * close gif, print and throw error: gif('print throw')
+ *
+ * 1. axios.get(href).gif().then(success_callback).catch(err_callback).gif(0);                          normally
+ * 2. axios.get(href).gif().then(success_callback).gif('throw').catch(err_callback);                    catch() work well
  * 3. axios.get(href).gif().then(success_callback).catch(err_callback).gif(0).then(finally_callback);   Last then() work well
  */
 
@@ -31,7 +35,7 @@ let gif_id= 'zhaiduting-promise-gif';
 
 export default function(arg){
     let count;
-    let gif= $('#'+ gif_id);                    //受pjax影响，本行的gif变量必须定义在函数内部
+    let gif= $('#'+ gif_id);
     if(!gif.length){
         let config= typeof(arg)==='object'? $.extend(defaultConfig, arg): defaultConfig;
         gif= $(`
@@ -43,14 +47,21 @@ export default function(arg){
         $(document.body).append(gif);
     }
 
-    if(arg===false || arg===0){ //关闭gif
+    if(arguments.length){ //关闭gif
         return this
             .then(()=> gif_close(gif))
             .catch(err=>{
                 gif_close(gif);
-                // return Promise.reject(err);     //将错误抛给promise链里面的其它catch()函数处理
+                if(arg.match(/\bprint\b/i))
+                    console.log(err);
+                if(arg.match(/\bthrow\b/i))
+                    return Promise.reject(err);     //将错误抛给promise链里面的其它catch()函数处理
+                if(arg.match(/\bignore\b/i))
+                    return;
+                if(arg === false || arg === 0)
+                    return err;
             });
-    }else{                      //显示gif
+    }else{ //显示gif
         clearTimeout(gif_timer);
         gif_count++;
         gif.show();
