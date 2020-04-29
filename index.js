@@ -52,14 +52,14 @@ export default function(arg){
             .then(()=> gif_close(gif))
             .catch(err=>{
                 gif_close(gif);
-                if(arg.match(/\bprint\b/i))
-                    console.log(err);
-                if(arg.match(/\bthrow\b/i))
-                    return Promise.reject(err);     //将错误抛给promise链里面的其它catch()函数处理
-                if(arg.match(/\bignore\b/i))
-                    return;
-                if(arg === false || arg === 0)
+                if(arg === 0 || arg === false)
                     return err;
+                if(arg === 1 || arg.match(/\bprint\b/i))
+                    console.log(err);
+                if(arg === 2 || arg.match(/\bthrow\b/i))
+                    return Promise.reject(err);     //将错误抛给promise链里面的其它catch()函数处理
+                if(arg === 3 || arg.match(/\bignore\b/i))
+                    return;
             });
     }else{ //显示gif
         clearTimeout(gif_timer);
