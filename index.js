@@ -43,29 +43,22 @@ export default function(arg= {}) {
         $(document.body).append(gif);
     }
 
-    if(argType === 'object'){ //开启gif
-        clearTimeout(gif_timer);
-        gif_count++;
-        gif.show();
-    }else{ //关闭gif
-        arg+= '';
-        return this
-            .then(res=> {
-                gif_close(gif);
-                if(arg.match(/\blog\b/i))
-                    console.log('Resolved', res);
-                return res;
-            })
-            .catch(err=> {
-                gif_close(gif);
-                if(arg.match(/\blog\b/i))
-                    console.log('Rejected', err);
-                if(arg.match(/\bignore\b/i))
-                    return err;
-                else
-                    return Promise.reject(err);     //将错误抛给promise链里面的其它catch()函数处理
-            });
-    }
+    clearTimeout(gif_timer);
+    gif_count++;
+    gif.show();
 
-    return this;
+    return this.then(res=> {
+        gif_close(gif);
+        if(arg.match(/\blog\b/i))
+            console.log('Resolved', res);
+        return res;
+    }).catch(err=> {
+        gif_close(gif);
+        if(arg.match(/\blog\b/i))
+            console.log('Rejected', err);
+        if(arg.match(/\bignore\b/i))
+            return err;
+        else
+            return Promise.reject(err);
+    });
 }
