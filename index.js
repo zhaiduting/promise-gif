@@ -37,9 +37,10 @@ let gif_close= function (gif, log, data) {
 let gif_id= 'zhaiduting-promise-gif';
 
 export default function(arg) {
+    arg= typeof arg === 'object'? $.extend(defaultConfig, arg): defaultConfig;
+
     let gif= $('#'+ gif_id);
     if(!gif.length){
-        arg= typeof arg === 'object'? $.extend(defaultConfig, arg): defaultConfig;
         gif= $(`
             <div id="${gif_id}" style="position:fixed;bottom:50%;right:50%;width:${arg.width};height:${arg.height};z-index:1001;visibility:hidden">
                 <img src="${arg.src}" style="position:absolute;width:100%;height:100%;bottom:-0%;right:-50%;visibility:visible">
