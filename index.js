@@ -53,8 +53,9 @@ export default function(arg) {
         });
         gif_count= 0;
         $(document.body).append(gif);
+    }else if(typeof gif_count !== 'number'){
+        gif_count= 0;          // fix a bug caused by pjax
     }
-
     clearTimeout(gif_timer);
     gif_count++;
     gif.show();
