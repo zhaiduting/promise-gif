@@ -10,6 +10,9 @@
  * Can be called multiple times
  *     axios.get(xxx).gif().then(res=>axios.post(xxx)).gif().then(xxx)
  *
+ * Can also adjust the position by x or y
+ *     promiseInstance.gif({width: '100px', height: '100px', x: '50% - 50px', y: '-10%', src: 'xx.gif'})
+ *
  */
 
 let $= window.jQuery|| window.$;
@@ -56,8 +59,8 @@ export default function(arg) {
     let gif= $('#'+ gif_id);
     if(!gif.length){
         gif= $(
-            '<div id="'+gif_id+'" style="position:fixed;bottom:50%;right:50%;z-index:2147483647;display:none;     border: 1px solid green">'+
-                '<img style="position:absolute;width:100%;height:100%;                    border: 1px solid red">'+
+            '<div id="'+gif_id+'" style="position:fixed;bottom:50%;right:50%;z-index:2147483647;display:none">'+
+                '<img style="position:absolute;width:100%;height:100%;bottom:-50%;right:-50%">'+
             '</div>'
         ).css({
             '-webkit-user-select': 'none',
@@ -72,13 +75,16 @@ export default function(arg) {
     }
     clearTimeout(gif_timer);
     gif_count++;
-    gif.children('img').prop('src', arg.src);
-    gif.css({
-        width: arg.width,
-        height: arg.height,
-        bottom: calc(arg.y),
-        right: calc(arg.x)
-    }).show();
+
+    if(gif.is(':hidden')){
+        gif.children('img').prop('src', arg.src);
+        gif.css({
+            width: arg.width,
+            height: arg.height,
+            bottom: calc(arg.y),
+            right: calc(arg.x)
+        }).show();
+    }
 
     let log= arg.log;
     return this.then(res=> {
