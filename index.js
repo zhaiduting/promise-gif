@@ -13,6 +13,8 @@
  * Can also adjust the position by x or y
  *     promiseInstance.gif({width: '100px', height: '100px', x: '-21.8%+50px', y: '11.8%-50px', src: 'xx.gif'})
  *
+ * Or put gif in a box by box-selector
+ *     promiseInstance.gif({box: '#sample2-box'})
  */
 
 let $= window.jQuery|| window.$;
@@ -58,11 +60,12 @@ function calc(n) {
 
 export default function(arg) {
     arg= typeof arg === 'object'? $.extend({}, defaultConfig, arg): defaultConfig;
+    clearTimeout(gif_timer);
 
     let gif= $('#'+ gif_id);
     if(!gif.length){
         gif= $(
-            '<div id="'+gif_id+'" style="position:fixed;bottom:50%;right:50%;z-index:2147483647;display:none">'+
+            '<div id="'+gif_id+'" style="bottom:50%;right:50%;display:none">'+
                 '<img style="position:absolute;width:100%;height:100%;bottom:-50%;right:-50%">'+
             '</div>'
         ).css({
@@ -72,12 +75,16 @@ export default function(arg) {
             'user-select': 'none',
         });
         gif_count= 0;
-        $(document.body).append(gif);
     }else if(typeof gif_count !== 'number'){
-        gif_count= 0;          // fix a bug caused by pjax
+        gif_count= 0;                                               // fix a bug caused by pjax
     }
-    clearTimeout(gif_timer);
     gif_count++;
+
+    if(arg.box){                                                    //装进盒子里！
+        $(arg.box).append(gif.css('position', 'absolute'))
+    }else{
+        $(document.body).append(gif.css('position', 'fixed'));
+    }
 
     if(gif.is(':hidden')){
         gif.children('img').prop('src', arg.src);
