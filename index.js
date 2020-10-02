@@ -27,7 +27,9 @@ let defaultConfig= {
 
 let gif_timer;
 let gif_count;
-let gif_close= function (gif, log, data) {
+let gif_id= 'zhaiduting-promise-gif';
+
+function close(gif, log, data) {
     gif_count--;
     if(gif_count <= 0){
         gif_timer= setTimeout(()=>{
@@ -37,9 +39,7 @@ let gif_close= function (gif, log, data) {
     }
     if(log)
         console.log(log, data);
-};
-
-let gif_id= 'zhaiduting-promise-gif';
+}
 
 function calc(n) {
     let ret= '50%';
@@ -92,11 +92,11 @@ export default function(arg) {
     let log= arg.log;
     return this.then(res=> {
         log= log? 'Resolved': false;
-        gif_close(gif, log, res);
+        close(gif, log, res);
         return res;
     }).catch(err=> {
         log= log? 'Rejected': false;
-        gif_close(gif, log, err);
+        close(gif, log, err);
         return Promise.reject(err);
     });
 }
