@@ -13,7 +13,7 @@
  * Can also adjust the position by x or y
  *     promiseInstance.gif({width: '100px', height: '100px', x: '-21.8%+50px', y: '11.8%-50px', src: 'xx.gif'})
  *
- * Or put gif in a box by box-selector
+ * Or put gif in a box by box-selector, the box must be relative
  *     promiseInstance.gif({box: '#sample2-box'})
  */
 
