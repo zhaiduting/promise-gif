@@ -11,7 +11,7 @@
  *     axios.get(xxx).gif().then(res=>axios.post(xxx)).gif().then(xxx)
  *
  * Can also adjust the position by x or y
- *     promiseInstance.gif({width: '100px', height: '100px', x: '50% - 50px', y: '-10%', src: 'xx.gif'})
+ *     promiseInstance.gif({width: '100px', height: '100px', x: '-21.8%+50px', y: '11.8%-50px', src: 'xx.gif'})
  *
  */
 
@@ -44,10 +44,13 @@ let gif_id= 'zhaiduting-promise-gif';
 function calc(n) {
     let ret= '50%';
     if(n){
-        ret= ret+ '&'+ n;
-        ret= ret.replace(/&\s*-/, ' - ')
-            .replace(/&\s*\+/, ' + ')
-            .replace(/&/, ' + ')
+        ret= '50%-('+ n+ ')';
+        ret= ret.replace(/-/g, ' - ')
+            .replace(/\+/g, ' + ')
+            .replace(/\)/g, ' ) ')
+            .replace(/\(/g, ' ( ')
+            .replace(/\(\s*\-\s+/g, ' ( -')     //e.g: must change ( - 100px ) to ( -100px )
+        ;
         ret= 'calc('+ ret+ ')'
     }
     return ret;
