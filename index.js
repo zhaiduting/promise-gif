@@ -27,14 +27,14 @@ let defaultConfig= {
     x, y,
 };
 
-let gif_timer;
+let gif_timer= [];
 let gif_count;
 let gif_id= 'zhaiduting-promise-gif';
 
 function close(gif, log, data) {
     gif_count--;
     if(gif_count <= 0){
-        gif_timer= setTimeout(()=>{
+        gif_timer[gif.id]= setTimeout(()=>{
             gif.hide();
             gif_count= 0;
         }, 200);
@@ -60,9 +60,11 @@ function calc(n) {
 
 export default function(arg) {
     arg= typeof arg === 'object'? $.extend({}, defaultConfig, arg): defaultConfig;
-    clearTimeout(gif_timer);
 
+    let gif_id= arg.id || gif_id;
     let gif= $('#'+ gif_id);
+    clearTimeout(gif_timer[gif.id]);
+
     if(!gif.length){
         gif= $(
             '<div id="'+gif_id+'" style="bottom:50%;right:50%;display:none">'+
