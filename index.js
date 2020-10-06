@@ -19,6 +19,9 @@
  * The above are all single cases, which can be converted into multiple by different id
  *     promiseInstance.gif({box: '#sample2-box', id: 'gif-center-aligned'})
  *     promiseInstance.gif({box: '#sample2-box', id: 'gif-left-aligned', x: '-50%+15px'})
+ *
+ * Show the gif forever
+ *     promiseInstance.gif({time: false})
  */
 
 let $ = window.jQuery || window.$;
@@ -28,20 +31,33 @@ let defaultConfig = {
     src,
     width: '30px', height: '30px',
     x: 0, y: 0,
-    id: 'zhaiduting-promise-gif'
+    id: 'zhaiduting-promise-gif',
+    time: 200,
 };
 
 let gif_timer = [];
 let gif_count = [];
 
+function time(t) {
+    let ret = t;
+    if(t === false)
+        ret = -1;
+    ret = parseInt(ret);
+    if(isNaN(ret))
+        ret = 0;
+    return ret;
+}
+
 function close(gif, log, data) {
+    let t = time(gif.data('time'));
     let id = gif.get(0).id;
     let c = --gif_count[id];
     if (c <= 0 || isNaN(c)) {
         gif_timer[id] = setTimeout(() => {
-            gif.hide();
             gif_count[id] = 0;
-        }, 200);
+            if(t !== -1)
+                gif.hide();
+        }, t);
     }
     if (log)
         console.log(log, data);
@@ -83,6 +99,7 @@ export default function (arg) {
     }
     gif_count[id]++;
 
+    gif.data('time', arg.time);
     if (arg.box) {
         $(arg.box).first().append(gif.css('position', 'absolute'));
     } else {
