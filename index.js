@@ -68,8 +68,8 @@ export default function (arg) {
     let gif = $('#' + id);
     if (!gif.length) {
         gif = $(
-            '<div id="' + id + '" style="bottom:50%;right:50%;display:none">' +
-            '<img style="position:absolute;width:100%;height:100%;bottom:-50%;right:-50%">' +
+            '<div id="' + id + '" style="bottom:50%;right:50%;display:none;visibility:hidden;">' +
+            '<img style="position:absolute;width:100%;height:100%;bottom:-50%;right:-50%;visibility:visible;">' +
             '</div>'
         ).css({
             '-webkit-user-select': 'none',
