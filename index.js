@@ -106,16 +106,14 @@ export default function (arg) {
         $(document.body).append(gif.css('position', 'fixed'));
     }
 
-    if (gif.is(':hidden')) {
-        gif.children('img').prop('src', arg.src);
-        gif.css({
-            width: arg.width,
-            height: arg.height,
-            bottom: calc(arg.y),
-            right: calc(arg.x)
-        }).show();
-    }
-
+    gif.children('img').prop('src', arg.src);
+    gif.css({
+        width: arg.width,
+        height: arg.height,
+        bottom: calc(arg.y),
+        right: calc(arg.x)
+    }).show();
+    
     let log = arg.log;
     return this.then(res => {
         log = log ? 'Resolved' : false;
