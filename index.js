@@ -126,6 +126,7 @@ promiseGif.ext = function (key, handler) {
     ext.push({key, handler});
 };
 
+//使用不同的 id 创建不同的 gif 动画
 promiseGif.ext('id', function (gif) {
     let id = gif.arg.id;
     let $dom = $('#' + id);
@@ -144,12 +145,14 @@ promiseGif.ext('id', function (gif) {
     gif.$dom = $dom;
 });
 
+//使用 time 控制图片显示的时间，单位毫秒
 promiseGif.ext('time', function (gif) {
     let time = gif.arg.time;
     let $dom = gif.$dom;
     $dom.data(space + 'time', time);
 });
 
+//把 gif 装进盒子里，参数为 jquery 能识别的选择器，例如 box: '#box-id'
 promiseGif.ext('box', function (gif) {
     let box = gif.arg.box;
     let $dom = gif.$dom;
@@ -159,6 +162,7 @@ promiseGif.ext('box', function (gif) {
         $(box).first().append($dom.css('position', 'absolute'));
 });
 
+//图片的 src 也可以是 base64 编码
 promiseGif.ext('src', function (gif) {
     let src = gif.arg.src;
     let $dom = gif.$dom;
@@ -177,12 +181,14 @@ promiseGif.ext('height', function (gif) {
     $dom.css('height', height);
 });
 
+//距离中心的水平偏移量 x
 promiseGif.ext('x', function (gif) {
     let x = gif.arg.x;
     let $dom = gif.$dom;
     $dom.css('right', calc(x));
 });
 
+//距离中心的垂直偏移量 y
 promiseGif.ext('y', function (gif) {
     let y = gif.arg.y;
     let $dom = gif.$dom;console.log('y', y);
