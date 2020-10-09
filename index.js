@@ -33,6 +33,7 @@ let defaultConfig = {
     x: 0, y: 0,
     id: 'zhaiduting-promise-gif',
     time: 200,
+    box: document.body,
 };
 
 let gif_timer = [];
@@ -49,14 +50,14 @@ function time(t) {
 }
 
 function close(gif, log, data) {
-    let t = time(gif.data('time'));
-    let id = gif.get(0).id;
+    let t = time(gif.$dom.data('time'));
+    let id = gif.arg.id;
     let c = --gif_count[id];
     if (c <= 0 || isNaN(c)) {
         gif_timer[id] = setTimeout(() => {
             gif_count[id] = 0;
             if(t !== -1)
-                gif.hide();
+                gif.$dom.hide();
         }, t);
     }
     if (log)
@@ -77,8 +78,24 @@ function calc(n) {
     return ret;
 }
 
-export default function (arg) {
+function promiseGif(arg) {
     arg = typeof arg === 'object' ? $.extend({}, defaultConfig, arg) : defaultConfig;
+    let gif = {
+        arg,
+        $dom: null,         // jquery 对象
+    };
+    let i = 0;
+    let el = ext[0];
+    while(el) {
+        if(typeof arg[el.key] !== 'undefined') {
+            if(typeof el.handler === 'function')
+                el.handler(gif);
+            else
+                console.log(el.key, ':', arg[el.key], '的 handler() 方法不存在')
+        }
+        el = ext[++i];
+    }
+    /*
     let id = arg.id;
     clearTimeout(gif_timer[id]);
     let gif = $('#' + id);
@@ -113,7 +130,10 @@ export default function (arg) {
         bottom: calc(arg.y),
         right: calc(arg.x)
     }).show();
-    
+
+    //*/
+    gif.$dom.show();
+                                                                        console.log('$dom', gif.$dom.get(0))
     let log = arg.log;
     return this.then(res => {
         log = log ? 'Resolved' : false;
@@ -125,3 +145,74 @@ export default function (arg) {
         return Promise.reject(err);
     });
 }
+
+export default promiseGif;
+
+let ext = [];
+
+promiseGif.ext = function (key, handler) {
+    ext.push({key, handler});
+};
+
+promiseGif.ext('id', function (gif) {
+    let id = gif.arg.id;
+    let $dom = $('#' + id);
+    if (!$dom.length) {
+        $dom = $(
+            '<div id="' + id + '" style="bottom:50%;right:50%;display:none;visibility:hidden;">' +
+            '<img style="position:absolute;width:100%;height:100%;bottom:-50%;right:-50%;visibility:visible;">' +
+            '</div>'
+        ).css({
+            '-webkit-user-select': 'none',
+            '-moz-user-select': 'none',
+            '-ms-user-select': 'none',
+            'user-select': 'none',
+        }).data('count', 0);
+    }
+    gif.$dom = $dom;
+});
+
+promiseGif.ext('time', function (gif) {
+    let time = gif.arg.time;
+    let $dom = gif.$dom;
+    $dom.data('time', time);
+});
+
+promiseGif.ext('width', function (gif) {
+    let width = gif.arg.width;
+    let $dom = gif.$dom;
+    $dom.css('width', width);
+});
+
+promiseGif.ext('height', function (gif) {
+    let height = gif.arg.height;
+    let $dom = gif.$dom;
+    $dom.css('height', height);
+});
+
+promiseGif.ext('x', function (gif) {
+    let x = gif.arg.x;
+    let $dom = gif.$dom;
+    $dom.css('right', calc(x));
+});
+
+promiseGif.ext('y', function (gif) {
+    let y = gif.arg.y;
+    let $dom = gif.$dom;console.log('y', y);
+    $dom.css('bottom', calc(y));
+});
+
+promiseGif.ext('src', function (gif) {
+    let src = gif.arg.src;
+    let $dom = gif.$dom;
+    $dom.children('img').prop('src', src);
+});
+
+promiseGif.ext('box', function (gif) {
+    let box = gif.arg.box;
+    let $dom = gif.$dom;
+    if(box === document.body)
+        $(box).append($dom.css('position', 'fixed'));
+    else
+        $(box).first().append($dom.css('position', 'absolute'));
+});
