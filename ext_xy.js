@@ -24,6 +24,6 @@ ext('x', function (gif) {
 //距离中心的垂直偏移量 y
 ext('y', function (gif) {
     let y = gif.arg.y;
-    let $dom = gif.$dom;console.log('y', y);
+    let $dom = gif.$dom;
     $dom.css('bottom', calc(y));
 });
