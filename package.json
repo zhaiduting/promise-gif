@@ -19,10 +19,10 @@
     "url": "https://github.com/zhaiduting/promise-gif/issues"
   },
   "homepage": "https://github.com/zhaiduting/promise-gif#readme",
-  "dependencies": {
-    "jquery": "*"
-  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
+  },
+  "devDependencies": {
+    "@zhaiduting/promise-adj": "github:zhaiduting/promise-adj"
   }
 }
