@@ -1,3 +1,3 @@
-//使用 github 用户名称作为前缀
+//使用 authorName-packageName- 作为 $dom.data(..) 全局属性的前缀
 
-export default 'zhaiduting';
+export default 'zhaiduting-promise-gif-';
