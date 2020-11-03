@@ -12,14 +12,18 @@ gif.wear({
     key: 'src',
     handler(obj) {
         let {options, $dom} = obj;
-        if ($dom.children('img').length === 0) {
-            $dom.append('<img src="' + options.src + '" style="width:100%;height:100%">')
+        let id = options.id;
+        let imgId = id + '-img';
+        let $img = $dom.children('#' + imgId);
+        if ($img.length === 0) {
+            $dom.append('<img id="' + imgId + '" src="' + options.src + '" style="width:100%;height:100%">')
                 .css({
                     '-webkit-user-select': 'none',
                     '-moz-user-select': 'none',
                     '-ms-user-select': 'none',
                     'user-select': 'none',
                 });
-        }
+        } else
+            $img.prop('src', options.src);
     }
 });
