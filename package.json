@@ -20,11 +20,10 @@
   },
   "homepage": "https://github.com/zhaiduting/promise-gif#readme",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com/zhaiduting"
   },
-  "devDependencies": {},
-  "dependencies": {
+  "devDependencies": {
     "@zhaiduting/promise-adj": "github:zhaiduting/promise-adj",
-    "@zhaiduting/wear-pin": "github:zhaiduting/wear-pin"
+    "@zhaiduting/wear-pin-xy": "github:zhaiduting/wear-pin-xy"
   }
 }

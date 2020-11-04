@@ -2,7 +2,7 @@ import gif from "./gif";
 
 gif.use({
     defaultOptions: {
-        width: '30px', height: '30px',
+        width: '30px', height: 'auto',
     }
 });
 

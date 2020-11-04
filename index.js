@@ -37,10 +37,8 @@ import './wear-box';
 import './wear-img';
 import './wear-size';
 
-import pin from '@zhaiduting/wear-pin';
+import pxy from '@zhaiduting/wear-pin-xy';
 
-gif.use(pin());                                     //这里需要重点测试
-
-import './wear-xy';
+gif.use(pxy());
 
 export default gif.grow;
